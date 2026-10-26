@@ -48,7 +48,11 @@ bool WorldToScreen(Vector3 worldPos, ImVec2& screenPos, int screenWidth, int scr
     screenPos.y = screenHeight - screenPoint.y; 
     return true;
 }
-
+// دالة التشغيل الأساسية اللي المنيو بينادي عليها
+void BasicHacks::Initialize() {
+    // هنا ممكن نحط أي كود عايزينه يشتغل أول ما المنيو يفتح
+    // دلوقتي إحنا مش محتاجين حاجة، بس لازم الدالة تكون موجودة عشان الكومبايلر يبني
+}
 // دالة الرسم الأساسية
 void DrawESP(void* cameraInstance, void* entityList, int entityCount) {
     if (!isESPEnabled || !cameraInstance || !entityList) return;
