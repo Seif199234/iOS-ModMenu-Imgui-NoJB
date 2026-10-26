@@ -20,7 +20,6 @@ jobs:
           theos-cache: true
       - name: Build package
         env:
-        ADDITIONAL_CFLAGS += -Wno-error
           THEOS: ${{ github.workspace }}/theos
         run: |
           make clean package
@@ -29,3 +28,4 @@ jobs:
         with:
           name: "Package built by ${{ matrix.os }}"
           path: ${{ github.workspace }}/packages/*.deb
+        ADDITIONAL_CFLAGS += -Wno-error
