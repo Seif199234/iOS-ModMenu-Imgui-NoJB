@@ -20,3 +20,4 @@ $(TWEAK_NAME)_FILES = MenuLoad/ImGuiDrawView.xm $(wildcard MenuLoad/*.mm) $(wild
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 include $(THEOS)/makefiles/aggregate.mk
+ADDITIONAL_CFLAGS += -Wno-nontrivial-memaccess
