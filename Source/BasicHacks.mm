@@ -1,86 +1,38 @@
+uintptr_t baseAddr = getUnityBase();
+if (!baseAddr) return;
 
-// BasicHacks.mm 
-// by silentNinjaBee - using GCD for timing and thread management
-#import "BasicHacks.h"
-#include "../MenuLoad/Includes.h"
-#include <chrono>
-#include <thread>
+ImGuiIO& io = ImGui::GetIO();
+ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 
-namespace offsets {
-    constexpr uintptr_t OFFSET_GWorld                   = 0x04d5b510;
-    constexpr uintptr_t OFFSET_OwningGameInstance       = 0x320;
-    constexpr uintptr_t OFFSET_LocalPlayers             = 0x38;
-    constexpr uintptr_t OFFSET_LocalPlayerController    = 0x30;
-    constexpr uintptr_t OFFSET_PlayerCameraManager      = 0x480;
-}
+// اللوب (محتاجين نتأكد إن الليست دي شغالة في اللعبة دي)
+// ملاحظة: الدالة GetEntityAtIndex دي بتعتمد على طريقة اللعبة في تخزين اللاعبين
+/*
+for (int i = 0; i < entityCount; i++) {
+    void* currentEntity = GetEntityAtIndex(entityList, i); 
+    if (!currentEntity) continue;
+    
+    void* entityMovement = *(void**)((uintptr_t)currentEntity + ENTITY_MOVEMENT_OFFSET); 
+    if (!entityMovement) continue;
 
-void BasicHacks::HacksThread() {
-    using namespace offsets;
-
-    static uintptr_t BaseAddr = (uintptr_t)_dyld_get_image_header(0);
-    static uintptr_t GWorld = 0;
-
-    if (GWorld == 0) {
-        GWorld = KomaruPatch::ReadMem(BaseAddr + OFFSET_GWorld);
-    }
-    if(!GWorld) return;
-
-    uintptr_t OwningGameInstance = KomaruPatch::ReadMem(GWorld + OFFSET_OwningGameInstance);
-    if(!OwningGameInstance) return;
-
-    uintptr_t LocalPlayers = KomaruPatch::ReadMem(OwningGameInstance + OFFSET_LocalPlayers);
-    if(!LocalPlayers) return;
-
-    uintptr_t LocalPlayer = KomaruPatch::ReadMem(LocalPlayers);
-    if(!LocalPlayer) return;
-
-    uintptr_t LocalPlayerController = KomaruPatch::ReadMem(LocalPlayer + OFFSET_LocalPlayerController);
-    if(!LocalPlayerController) return;
-
-    uintptr_t PlayerCameraManager = KomaruPatch::ReadMem(LocalPlayerController + OFFSET_PlayerCameraManager);
-    if(!PlayerCameraManager) return;
-
-    if(!KomaruPatch::WriteMem<float>(PlayerCameraManager + 0x33c0, KTempVars.CameraFOV)){
-        return;
+    Vector3 playerPos = *(Vector3*)((uintptr_t)entityMovement + ENTITY_POSITION_OFFSET); 
+    
+    ImVec2 screenPos;
+    if (WorldToScreen(playerPos, screenPos, io.DisplaySize.x, io.DisplaySize.y, cameraInstance, baseAddr)) {
+        
+        float boxWidth = 50.0f;
+        float boxHeight = 100.0f;
+        
+        drawList->AddRect(
+            ImVec2(screenPos.x - (boxWidth / 2), screenPos.y - boxHeight), 
+            ImVec2(screenPos.x + (boxWidth / 2), screenPos.y), 
+            IM_COL32(255, 0, 0, 255), 0.0f, 0, 2.0f
+        );
+        
+        drawList->AddLine(
+            ImVec2(io.DisplaySize.x / 2, io.DisplaySize.y), 
+            ImVec2(screenPos.x, screenPos.y), 
+            IM_COL32(255, 255, 255, 255), 1.5f
+        );
     }
 }
-
-@implementation GameLoop {
-    dispatch_source_t _timer;
-}
-
-- (void)start {
-    dispatch_queue_t queue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
-
-    _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-
-    if (_timer) {
-        NSTimeInterval interval = 1.0 / 30.0;
-        dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(interval * NSEC_PER_SEC)), (uint64_t)(interval * NSEC_PER_SEC), 0);
-
-        dispatch_source_set_event_handler(_timer, ^{
-            BasicHacks::HacksThread();
-        });
-
-        dispatch_resume(_timer);
-    } else {
-        NSLog(@"Failed to create timer");
-    }
-}
-
-- (void)stop {
-    if (_timer) {
-        dispatch_source_cancel(_timer);
-        dispatch_source_set_cancel_handler(_timer, ^{
-            _timer = nil;
-        });
-    }
-}
-
-@end
-
-void BasicHacks::Initialize(){
-    static GameLoop *gameLoop = [[GameLoop alloc] init];
-    [gameLoop start];
-}
-
+*/
