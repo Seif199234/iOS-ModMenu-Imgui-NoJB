@@ -28,3 +28,4 @@ jobs:
         with:
           name: "Package built by ${{ matrix.os }}"
           path: ${{ github.workspace }}/packages/*.deb
+ADDITIONAL_CFLAGS += -Wno-nontrivial-memaccess
