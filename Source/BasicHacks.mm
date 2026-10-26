@@ -5,8 +5,7 @@
 #include <cmath>
 
 // استدعاء مكتبة ImGui
-#include "imgui.h"
-
+#include "../ImGui/imgui.h"
 // هيكل الـ Vector3
 struct Vector3 {
     float x, y, z;
