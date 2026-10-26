@@ -1996,7 +1996,7 @@ struct ImGuiTableSortSpecs
     int                         SpecsCount;     // Sort spec count. Most often 1. May be > 1 when ImGuiTableFlags_SortMulti is enabled. May be == 0 when ImGuiTableFlags_SortTristate is enabled.
     bool                        SpecsDirty;     // Set to true when specs have changed since last time! Use this to sort again, then clear the flag.
 
-    ImGuiTableSortSpecs()       { memset(this, 0, sizeof(*this)); }
+    ImGuiTableSortSpecs()       {memset((void*)this, 0, sizeof(this)); }
 };
 
 //-----------------------------------------------------------------------------
