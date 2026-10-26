@@ -4,8 +4,6 @@ if (!baseAddr) return;
 ImGuiIO& io = ImGui::GetIO();
 ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 
-// اللوب (محتاجين نتأكد إن الليست دي شغالة في اللعبة دي)
-// ملاحظة: الدالة GetEntityAtIndex دي بتعتمد على طريقة اللعبة في تخزين اللاعبين
 /*
 for (int i = 0; i < entityCount; i++) {
     void* currentEntity = GetEntityAtIndex(entityList, i); 
